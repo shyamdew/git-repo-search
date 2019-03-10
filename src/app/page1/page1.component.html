@@ -1,0 +1,78 @@
+
+<div class="main">
+  <div class="searcher panel panel-primary">
+        <div class="panel-heading">Git Repo Search Filter</div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-8 col-sm-6 col-md-4 col-lg-3">
+                <input class="textInput" type="text" [(ngModel)]="repoSearchInput" placeholder="Enter Repo Search" />
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 center">
+                <input class="search btn btn-primary" (click)="searchRepository()"  [disabled]="loading"  type="submit" value="Search" />
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="gap">
+  </div>
+  <div class="searcherResult panel panel-primary cards">
+      <div class="panel-heading">Repo Search Result</div>
+      <div class="panel-body searcherResultBody">
+        <div *ngIf="loading" class="row loaderContainer">
+          <div class="col-xs-12  ">
+            <div class="loader center"> </div>
+          </div>
+        </div>
+        <div *ngIf="error" class="row loaderContainer">
+            <div class="col-xs-12 center ">
+              <div>
+                Sorry.... We are unable to process your request.
+              </div>
+            </div>
+          </div>
+        <div *ngIf="!loading && repoList" class="row">
+          <div *ngFor="let repo of repoList | paginate: { itemsPerPage: numberOfPages, currentPage: page, totalItems: repoList.length }" class="col-xs-12 col-md-6 center">
+            <div class="card">
+             <!-- <div class="name">
+               {{repo.name}}
+             </div> -->
+             <div class="icon">
+                <!-- {{repo.owner.avatar_url}} -->
+                <img src="{{repo.owner.avatar_url}}" class="img-circle" />
+             </div>
+             <div align=center>
+               <h1>{{repo.name}}</h1>
+            </div>
+             <div class="row ">
+                <div class="col-xs-1"></div>
+               <div class="star col-xs-3">
+  
+                 <img src="https://img.icons8.com/metro/26/000000/christmas-star.png">
+                 <span>{{repo.watchers}}</span>
+                </div>
+                <div class="star col-xs-3">
+                    <img src="https://img.icons8.com/windows/32/000000/code-fork.png">
+                    {{repo.forks}}
+                </div>
+                <div class="star col-xs-3">
+                    <img src="https://img.icons8.com/material-rounded/24/000000/box-important.png">
+                    {{repo.open_issues_count}}
+                </div>
+              </div>
+              <div class="description">
+                  {{repo.description}}
+              </div>
+              <div class="link row">
+                <div class="col-xs-offset-1 col-xs-10 center">
+                    <input class="profile btn btn-primary" (click)="openWebsiteInNewTab(repo.homepage)"  type="submit" value="VIEW PROFILE" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer" *ngIf="repoList" >
+          <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+      </div>
+  </div>
+</div>
